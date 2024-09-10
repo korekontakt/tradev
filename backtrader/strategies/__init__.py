@@ -1,0 +1,1 @@
+from .SMAStrategy import SMAStrategy

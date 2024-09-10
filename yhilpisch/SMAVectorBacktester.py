@@ -58,10 +58,8 @@ class SMAVectorBacktester(object):
     def get_data(self):
         ''' Retrieves and prepares the data.
         '''
-        raw = raw = pd.read_csv('../data/BankOfEngland-GBPUSD.csv',
-                                index_col=0, 
-                                parse_dates=True, 
-                                date_format='%d %b %y').dropna().sort_index()
+        raw = pd.read_csv('../data/BankOfEngland-GBPUSD.csv', index_col=0,
+                          parse_dates=True, date_format='%d %b %y').dropna().sort_index()
         raw['USDGBP'] = 1 / raw['GBPUSD']
         raw = pd.DataFrame(raw[self.symbol])
         raw = raw.loc[self.start:self.end]

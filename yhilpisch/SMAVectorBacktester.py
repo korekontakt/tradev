@@ -46,23 +46,24 @@ class SMAVectorBacktester(object):
         implements a brute force optimizeation for the two SMA parameters
     '''
 
-    def __init__(self, symbol, SMA1, SMA2, start, end, csv_file, to_sort=True):
+    def __init__(self, symbol, SMA1, SMA2, start, end):
         self.symbol = symbol
         self.SMA1 = SMA1
         self.SMA2 = SMA2
         self.start = start
         self.end = end
         self.results = None
-        self.get_data(csv_file, to_sort)
+        self.get_data()
 
-    def get_data(self, csv_file, to_sort):
+    def get_data(self):
         ''' Retrieves and prepares the data.
         '''
-        raw = pd.read_csv(csv_file,
-                          index_col=0, parse_dates=True).dropna()
+        raw = raw = pd.read_csv('../data/BankOfEngland-GBPUSD.csv',
+                                index_col=0, 
+                                parse_dates=True, 
+                                date_format='%d %b %y').dropna().sort_index()
+        raw['USDGBP'] = 1 / raw['GBPUSD']
         raw = pd.DataFrame(raw[self.symbol])
-        if to_sort:
-            raw = raw.sort_index()
         raw = raw.loc[self.start:self.end]
         raw.rename(columns={self.symbol: 'price'}, inplace=True)
         raw['return'] = np.log(raw / raw.shift(1))
